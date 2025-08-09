@@ -461,11 +461,33 @@ def health():
         'version': '1.0.0'
     })
 
+# Template filters for date formatting
+@app.template_filter('moment')
+def moment_filter(date):
+    """Simple date formatting filter."""
+    if not date:
+        return 'Never'
+    from datetime import datetime
+    if isinstance(date, str):
+        date = datetime.fromisoformat(date.replace('Z', '+00:00'))
+    
+    now = datetime.utcnow()
+    diff = now - date
+    
+    if diff.days > 0:
+        return f'{diff.days}d ago'
+    elif diff.seconds > 3600:
+        return f'{diff.seconds // 3600}h ago'
+    elif diff.seconds > 60:
+        return f'{diff.seconds // 60}m ago'
+    else:
+        return 'Just now'
+
 # Initialize database
-@app.before_first_request
 def create_tables():
     """Create database tables."""
-    db.create_all()
+    with app.app_context():
+        db.create_all()
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
