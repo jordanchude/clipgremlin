@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  clipgremlin:
+    build: .
+    environment:
+      - TWITCH_CLIENT_ID=${TWITCH_CLIENT_ID}
+      - TWITCH_CLIENT_SECRET=${TWITCH_CLIENT_SECRET}
+      - TWITCH_BOT_TOKEN=${TWITCH_BOT_TOKEN}
+      - CHANNEL_NAME=${CHANNEL_NAME}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - SILENCE_DURATION=${SILENCE_DURATION:-60}
+      - MAX_MESSAGE_RATE=${MAX_MESSAGE_RATE:-20}
+      - RATE_LIMIT_WINDOW=${RATE_LIMIT_WINDOW:-30}
+      - AUDIO_CHUNK_DURATION=${AUDIO_CHUNK_DURATION:-10}
+      - MAX_AUDIO_SIZE_MB=${MAX_AUDIO_SIZE_MB:-25}
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8080/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    ports:
+      - "8080:8080"

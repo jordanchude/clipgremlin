@@ -1,0 +1,366 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'ClipGremlin - Twitch bot infrastructure'
+
+Parameters:
+  TwitchClientId:
+    Type: String
+    Description: Twitch application client ID
+    NoEcho: true
+  
+  TwitchClientSecret:
+    Type: String
+    Description: Twitch application client secret
+    NoEcho: true
+  
+  TwitchBotToken:
+    Type: String
+    Description: Twitch bot OAuth token
+    NoEcho: true
+  
+  OpenAIApiKey:
+    Type: String
+    Description: OpenAI API key
+    NoEcho: true
+  
+  TwitchWebhookSecret:
+    Type: String
+    Description: Twitch webhook secret
+    NoEcho: true
+  
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: VPC ID for ECS tasks
+  
+  SubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: Subnet IDs for ECS tasks
+
+Resources:
+  # Secrets Manager
+  TwitchSecrets:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: clipgremlin/twitch
+      Description: Twitch API credentials for ClipGremlin
+      SecretString: !Sub |
+        {
+          "client_id": "${TwitchClientId}",
+          "client_secret": "${TwitchClientSecret}",
+          "bot_token": "${TwitchBotToken}",
+          "webhook_secret": "${TwitchWebhookSecret}"
+        }
+  
+  OpenAISecrets:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: clipgremlin/openai
+      Description: OpenAI API credentials for ClipGremlin
+      SecretString: !Sub |
+        {
+          "api_key": "${OpenAIApiKey}"
+        }
+  
+  # ECS Cluster
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: clipgremlin-cluster
+      CapacityProviders:
+        - FARGATE
+      DefaultCapacityProviderStrategy:
+        - CapacityProvider: FARGATE
+          Weight: 1
+  
+  # Security Group
+  ECSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for ClipGremlin ECS tasks
+      VpcId: !Ref VpcId
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
+  
+  # IAM Role for ECS Task
+  ECSTaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: SecretsManagerAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
+                Resource:
+                  - !Ref TwitchSecrets
+                  - !Ref OpenAISecrets
+        - PolicyName: CloudWatchLogs
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/ecs/clipgremlin:*'
+  
+  # IAM Role for ECS Task Execution
+  ECSExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      Policies:
+        - PolicyName: ECRAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ecr:GetAuthorizationToken
+                  - ecr:BatchCheckLayerAvailability
+                  - ecr:GetDownloadUrlForLayer
+                  - ecr:BatchGetImage
+                Resource: '*'
+  
+  # CloudWatch Log Group
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /ecs/clipgremlin
+      RetentionInDays: 7
+  
+  # ECR Repository
+  ECRRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: clipgremlin
+      ImageScanningConfiguration:
+        ScanOnPush: true
+      LifecyclePolicy:
+        LifecyclePolicyText: |
+          {
+            "rules": [
+              {
+                "rulePriority": 1,
+                "description": "Keep last 10 images",
+                "selection": {
+                  "tagStatus": "any",
+                  "countType": "imageCountMoreThan",
+                  "countNumber": 10
+                },
+                "action": {
+                  "type": "expire"
+                }
+              }
+            ]
+          }
+  
+  # ECS Task Definition
+  ECSTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: clipgremlin-task
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      Cpu: 256
+      Memory: 512
+      ExecutionRoleArn: !GetAtt ECSExecutionRole.Arn
+      TaskRoleArn: !GetAtt ECSTaskRole.Arn
+      ContainerDefinitions:
+        - Name: clipgremlin
+          Image: !Sub '${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/clipgremlin:latest'
+          Essential: true
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref LogGroup
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: ecs
+          Environment:
+            - Name: AWS_REGION
+              Value: !Ref AWS::Region
+            - Name: USE_SECRETS_MANAGER
+              Value: 'true'
+          PortMappings:
+            - ContainerPort: 8080
+              Protocol: tcp
+          HealthCheck:
+            Command:
+              - CMD-SHELL
+              - 'curl -f http://localhost:8080/health || exit 1'
+            Interval: 30
+            Timeout: 5
+            Retries: 3
+            StartPeriod: 60
+  
+  # Lambda Execution Role
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: ECSAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ecs:RunTask
+                  - ecs:StopTask
+                  - ecs:ListTasks
+                  - ecs:DescribeTasks
+                Resource: '*'
+              - Effect: Allow
+                Action:
+                  - iam:PassRole
+                Resource:
+                  - !GetAtt ECSTaskRole.Arn
+                  - !GetAtt ECSExecutionRole.Arn
+        - PolicyName: SecretsManagerAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
+                Resource: !Ref TwitchSecrets
+  
+  # Lambda Function for Webhook Handler
+  WebhookLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: clipgremlin-webhook-handler
+      Runtime: python3.11
+      Handler: webhook_handler.lambda_handler
+      Code:
+        ZipFile: |
+          # This would be replaced with the actual webhook_handler.py code
+          def lambda_handler(event, context):
+              return {'statusCode': 200, 'body': 'Placeholder'}
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 60
+      Environment:
+        Variables:
+          ECS_CLUSTER_NAME: !Ref ECSCluster
+          ECS_TASK_DEFINITION: !Ref ECSTaskDefinition
+          SUBNET_IDS: !Join [',', !Ref SubnetIds]
+          SECURITY_GROUP_IDS: !Ref ECSSecurityGroup
+          TWITCH_WEBHOOK_SECRET: !Ref TwitchWebhookSecret
+  
+  # API Gateway for Webhook
+  WebhookAPI:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: clipgremlin-webhook-api
+      Description: API for Twitch EventSub webhooks
+  
+  WebhookResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref WebhookAPI
+      ParentId: !GetAtt WebhookAPI.RootResourceId
+      PathPart: webhook
+  
+  WebhookMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref WebhookAPI
+      ResourceId: !Ref WebhookResource
+      HttpMethod: POST
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${WebhookLambda.Arn}/invocations'
+  
+  WebhookDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn: WebhookMethod
+    Properties:
+      RestApiId: !Ref WebhookAPI
+      StageName: prod
+  
+  # Lambda Permission for API Gateway
+  LambdaInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref WebhookLambda
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${WebhookAPI}/*/*'
+  
+  # CloudWatch Alarms
+  TaskFailureAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: ClipGremlin-TaskFailure
+      AlarmDescription: Alert when ECS tasks fail
+      MetricName: TaskCount
+      Namespace: AWS/ECS
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: LessThanThreshold
+      Dimensions:
+        - Name: ServiceName
+          Value: clipgremlin
+        - Name: ClusterName
+          Value: !Ref ECSCluster
+
+Outputs:
+  ClusterName:
+    Description: ECS Cluster Name
+    Value: !Ref ECSCluster
+    Export:
+      Name: !Sub '${AWS::StackName}-ClusterName'
+  
+  TaskDefinitionArn:
+    Description: ECS Task Definition ARN
+    Value: !Ref ECSTaskDefinition
+    Export:
+      Name: !Sub '${AWS::StackName}-TaskDefinitionArn'
+  
+  WebhookURL:
+    Description: Webhook URL for Twitch EventSub
+    Value: !Sub 'https://${WebhookAPI}.execute-api.${AWS::Region}.amazonaws.com/prod/webhook'
+    Export:
+      Name: !Sub '${AWS::StackName}-WebhookURL'
+  
+  ECRRepository:
+    Description: ECR Repository URI
+    Value: !Sub '${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ECRRepository}'
+    Export:
+      Name: !Sub '${AWS::StackName}-ECRRepository'
