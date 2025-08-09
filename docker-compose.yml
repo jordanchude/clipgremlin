@@ -1,8 +1,49 @@
 version: '3.8'
 
 services:
-  clipgremlin:
+  # Web application for streamers to manage their bots
+  web:
     build: .
+    command: python web_app.py
+    environment:
+      - FLASK_ENV=development
+      - FLASK_SECRET_KEY=${FLASK_SECRET_KEY:-dev-secret-key}
+      - TWITCH_CLIENT_ID=${TWITCH_CLIENT_ID}
+      - TWITCH_CLIENT_SECRET=${TWITCH_CLIENT_SECRET}
+      - TWITCH_REDIRECT_URI=${TWITCH_REDIRECT_URI:-http://localhost:5000/auth/callback}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - DATABASE_URL=${DATABASE_URL:-sqlite:///clipgremlin.db}
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+      - ECS_CLUSTER_NAME=${ECS_CLUSTER_NAME:-clipgremlin-cluster}
+      - ECS_TASK_DEFINITION=${ECS_TASK_DEFINITION:-clipgremlin-task}
+      - SUBNET_IDS=${SUBNET_IDS}
+      - SECURITY_GROUP_ID=${SECURITY_GROUP_ID}
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./templates:/app/templates
+      - ./static:/app/static
+      - ./clipgremlin.db:/app/clipgremlin.db
+    restart: unless-stopped
+    depends_on:
+      - db
+
+  # PostgreSQL database for production use
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=clipgremlin
+      - POSTGRES_USER=clipgremlin
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-clipgremlin_dev}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # Individual bot instance (for single-channel testing)
+  bot:
+    build: .
+    command: python main.py
     environment:
       - TWITCH_CLIENT_ID=${TWITCH_CLIENT_ID}
       - TWITCH_CLIENT_SECRET=${TWITCH_CLIENT_SECRET}
@@ -25,3 +66,8 @@ services:
       retries: 3
     ports:
       - "8080:8080"
+    profiles:
+      - single-bot  # Only run when specifically requested
+
+volumes:
+  postgres_data:

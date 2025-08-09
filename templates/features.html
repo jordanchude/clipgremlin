@@ -1,0 +1,389 @@
+{% extends "base.html" %}
+
+{% block title %}Features - ClipGremlin{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="py-5 bg-gradient-primary text-white">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-8 mx-auto">
+                <h1 class="display-4 fw-bold mb-4">
+                    Powerful Features for Smart Streamers
+                </h1>
+                <p class="lead">
+                    ClipGremlin combines cutting-edge AI technology with Twitch expertise 
+                    to create the most intelligent chat engagement bot available.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Core Features -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-5">
+            <!-- Real-time Audio Processing -->
+            <div class="col-lg-6">
+                <div class="feature-detail">
+                    <div class="feature-icon mb-4">
+                        <i class="fas fa-microphone-alt fa-4x text-primary"></i>
+                    </div>
+                    <h3 class="fw-bold mb-3">Real-time Audio Processing</h3>
+                    <p class="text-muted mb-4">
+                        ClipGremlin captures your live stream audio using low-latency HLS processing, 
+                        converting it to optimized chunks for lightning-fast transcription.
+                    </p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>~300ms processing latency</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>16kHz mono audio optimization</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Automatic quality adjustment</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>FFmpeg-powered reliability</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- AI Transcription -->
+            <div class="col-lg-6">
+                <div class="feature-detail">
+                    <div class="feature-icon mb-4">
+                        <i class="fas fa-brain fa-4x text-success"></i>
+                    </div>
+                    <h3 class="fw-bold mb-3">AI-Powered Transcription</h3>
+                    <p class="text-muted mb-4">
+                        Using OpenAI's Whisper-Turbo, ClipGremlin understands what you're saying 
+                        in real-time with incredible accuracy across multiple languages.
+                    </p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>25+ languages supported</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Automatic language detection</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Context-aware processing</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Noise filtering built-in</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Smart Prompts -->
+            <div class="col-lg-6">
+                <div class="feature-detail">
+                    <div class="feature-icon mb-4">
+                        <i class="fas fa-lightbulb fa-4x text-warning"></i>
+                    </div>
+                    <h3 class="fw-bold mb-3">Contextual Prompt Generation</h3>
+                    <p class="text-muted mb-4">
+                        GPT-3.5-Turbo analyzes your recent stream content to generate perfectly 
+                        timed, relevant prompts that spark genuine conversation.
+                    </p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Content-aware prompts</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>PG-13 and ToS-safe</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Mischievous but friendly tone</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Multi-language responses</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Silence Detection -->
+            <div class="col-lg-6">
+                <div class="feature-detail">
+                    <div class="feature-icon mb-4">
+                        <i class="fas fa-clock fa-4x text-info"></i>
+                    </div>
+                    <h3 class="fw-bold mb-3">Intelligent Silence Detection</h3>
+                    <p class="text-muted mb-4">
+                        Advanced algorithms monitor your chat activity, detecting the perfect 
+                        moments to engage without overwhelming your audience.
+                    </p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Configurable silence duration</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Rolling window analysis</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Smart timing optimization</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>No spam or flooding</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Technical Features -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold">Built for Performance & Reliability</h2>
+                <p class="lead text-muted">Enterprise-grade infrastructure that scales with your success</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-cloud fa-3x text-primary mb-3"></i>
+                        <h5 class="fw-bold">AWS Fargate Powered</h5>
+                        <p class="text-muted">
+                            Serverless containers that scale automatically and cost $0 when you're offline.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-shield-alt fa-3x text-success mb-3"></i>
+                        <h5 class="fw-bold">AutoMod Integration</h5>
+                        <p class="text-muted">
+                            Every prompt is checked against Twitch's AutoMod before posting for maximum safety.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-tachometer-alt fa-3x text-warning mb-3"></i>
+                        <h5 class="fw-bold">Rate Limiting</h5>
+                        <p class="text-muted">
+                            Respects Twitch's message limits with intelligent queuing and backoff strategies.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-sync-alt fa-3x text-info mb-3"></i>
+                        <h5 class="fw-bold">EventSub Integration</h5>
+                        <p class="text-muted">
+                            Automatically starts when you go live and stops when you end, no manual management.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-chart-line fa-3x text-danger mb-3"></i>
+                        <h5 class="fw-bold">Real-time Monitoring</h5>
+                        <p class="text-muted">
+                            Built-in health checks, metrics, and logging for complete visibility.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-users fa-3x text-secondary mb-3"></i>
+                        <h5 class="fw-bold">Moderator Controls</h5>
+                        <p class="text-muted">
+                            Mods and broadcasters can pause/resume the bot instantly with simple commands.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Language Support -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold">Global Language Support</h2>
+                <p class="lead text-muted">ClipGremlin speaks your audience's language</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="row g-3">
+                    <div class="col-md-3 col-sm-6">
+                        <div class="language-item text-center p-3">
+                            <i class="fas fa-globe text-primary mb-2"></i>
+                            <h6 class="fw-bold">English</h6>
+                            <small class="text-muted">Native</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="language-item text-center p-3">
+                            <i class="fas fa-globe text-success mb-2"></i>
+                            <h6 class="fw-bold">Spanish</h6>
+                            <small class="text-muted">Español</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="language-item text-center p-3">
+                            <i class="fas fa-globe text-warning mb-2"></i>
+                            <h6 class="fw-bold">French</h6>
+                            <small class="text-muted">Français</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="language-item text-center p-3">
+                            <i class="fas fa-globe text-info mb-2"></i>
+                            <h6 class="fw-bold">German</h6>
+                            <small class="text-muted">Deutsch</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="language-item text-center p-3">
+                            <i class="fas fa-globe text-danger mb-2"></i>
+                            <h6 class="fw-bold">Portuguese</h6>
+                            <small class="text-muted">Português</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="language-item text-center p-3">
+                            <i class="fas fa-globe text-secondary mb-2"></i>
+                            <h6 class="fw-bold">Italian</h6>
+                            <small class="text-muted">Italiano</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="language-item text-center p-3">
+                            <i class="fas fa-globe text-primary mb-2"></i>
+                            <h6 class="fw-bold">Japanese</h6>
+                            <small class="text-muted">日本語</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="language-item text-center p-3">
+                            <i class="fas fa-globe text-success mb-2"></i>
+                            <h6 class="fw-bold">Korean</h6>
+                            <small class="text-muted">한국어</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <p class="text-muted">
+                        <strong>...and 17+ more languages supported through automatic detection!</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Moderator Commands -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold">Simple Commands, Powerful Control</h2>
+                <p class="lead text-muted">Give your moderators the tools they need</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-5">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="command-item">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="command-icon bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                            <i class="fas fa-pause"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-1 fw-bold">!gremlin pause</h5>
+                                            <p class="mb-0 text-muted">Mute the bot</p>
+                                        </div>
+                                    </div>
+                                    <div class="command-example bg-light p-3 rounded">
+                                        <strong class="text-primary">ClipGremlin:</strong> 
+                                        <span class="text-muted">Gremlin muted 😶</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="command-item">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="command-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                            <i class="fas fa-play"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-1 fw-bold">!gremlin resume</h5>
+                                            <p class="mb-0 text-muted">Unmute the bot</p>
+                                        </div>
+                                    </div>
+                                    <div class="command-example bg-light p-3 rounded">
+                                        <strong class="text-primary">ClipGremlin:</strong> 
+                                        <span class="text-muted">Gremlin unleashed 😈</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <p class="text-muted mb-0">
+                                <i class="fas fa-shield-alt text-warning me-2"></i>
+                                Commands work for <strong>moderators and broadcasters only</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold mb-4">Ready to Supercharge Your Chat? 🚀</h2>
+                <p class="lead mb-4">
+                    Join the streamers who are already using ClipGremlin to build more engaged communities.
+                </p>
+                <a href="{{ url_for('login') }}" class="btn btn-warning btn-lg me-3">
+                    <i class="fab fa-twitch me-2"></i>Get Started Now
+                </a>
+                <a href="{{ url_for('pricing') }}" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-dollar-sign me-2"></i>View Pricing
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Add smooth scroll animations
+document.addEventListener('DOMContentLoaded', function() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    // Animate feature details
+    document.querySelectorAll('.feature-detail, .card, .language-item, .command-item').forEach(element => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(20px)';
+        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(element);
+    });
+});
+</script>
+{% endblock %}

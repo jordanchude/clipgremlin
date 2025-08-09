@@ -1,0 +1,460 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - ClipGremlin{% endblock %}
+
+{% block head %}
+<style>
+.status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+}
+.status-active { background-color: #28a745; }
+.status-inactive { background-color: #dc3545; }
+.activity-item {
+    border-left: 3px solid #dee2e6;
+    transition: all 0.3s ease;
+}
+.activity-item:hover {
+    border-left-color: #007bff;
+    background-color: #f8f9fa;
+}
+.settings-card {
+    transition: all 0.3s ease;
+}
+.settings-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="display-6 fw-bold">
+                        <i class="fas fa-tachometer-alt me-2 text-primary"></i>
+                        Dashboard
+                    </h1>
+                    <p class="text-muted">Welcome back, {{ channel.display_name }}!</p>
+                </div>
+                <div class="text-end">
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="status-indicator status-{{ 'active' if channel.is_active else 'inactive' }}"></span>
+                        <span class="fw-semibold">
+                            {{ 'Active' if channel.is_active else 'Inactive' }}
+                        </span>
+                    </div>
+                    <button id="toggleBot" class="btn btn-{{ 'danger' if channel.is_active else 'success' }} btn-lg">
+                        <i class="fas fa-{{ 'stop' if channel.is_active else 'play' }} me-2"></i>
+                        {{ 'Stop Bot' if channel.is_active else 'Start Bot' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="row mb-5">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card bg-primary text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="card-title text-uppercase mb-1">Status</h6>
+                            <h4 class="mb-0">{{ 'Running' if channel.is_active else 'Stopped' }}</h4>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-robot fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card bg-success text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="card-title text-uppercase mb-1">Silence Duration</h6>
+                            <h4 class="mb-0">{{ channel.silence_duration }}s</h4>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-clock fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card bg-warning text-dark h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="card-title text-uppercase mb-1">Message Rate</h6>
+                            <h4 class="mb-0">{{ channel.max_message_rate }}/30s</h4>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-tachometer-alt fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card bg-info text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="card-title text-uppercase mb-1">Last Active</h6>
+                            <h4 class="mb-0">
+                                {% if channel.last_active %}
+                                    {{ moment(channel.last_active).fromNow() }}
+                                {% else %}
+                                    Never
+                                {% endif %}
+                            </h4>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-history fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Settings Panel -->
+        <div class="col-lg-4 mb-4">
+            <div class="card settings-card h-100">
+                <div class="card-header bg-light">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-cog me-2"></i>Bot Settings
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form id="settingsForm">
+                        <div class="mb-3">
+                            <label for="silenceDuration" class="form-label">
+                                <i class="fas fa-clock me-1"></i>Silence Duration
+                            </label>
+                            <div class="input-group">
+                                <input type="range" class="form-range" id="silenceDuration" 
+                                       min="30" max="300" step="10" value="{{ channel.silence_duration }}">
+                                <span class="input-group-text" id="silenceDurationValue">{{ channel.silence_duration }}s</span>
+                            </div>
+                            <small class="form-text text-muted">How long to wait before sending a prompt</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="messageRate" class="form-label">
+                                <i class="fas fa-tachometer-alt me-1"></i>Max Message Rate
+                            </label>
+                            <div class="input-group">
+                                <input type="range" class="form-range" id="messageRate" 
+                                       min="1" max="20" step="1" value="{{ channel.max_message_rate }}">
+                                <span class="input-group-text" id="messageRateValue">{{ channel.max_message_rate }}/30s</span>
+                            </div>
+                            <small class="form-text text-muted">Maximum messages per 30 seconds</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="languageOverride" class="form-label">
+                                <i class="fas fa-globe me-1"></i>Language Override
+                            </label>
+                            <select class="form-select" id="languageOverride">
+                                <option value="">Auto-detect</option>
+                                <option value="en" {{ 'selected' if channel.language_override == 'en' }}>English</option>
+                                <option value="es" {{ 'selected' if channel.language_override == 'es' }}>Spanish</option>
+                                <option value="fr" {{ 'selected' if channel.language_override == 'fr' }}>French</option>
+                                <option value="de" {{ 'selected' if channel.language_override == 'de' }}>German</option>
+                                <option value="pt" {{ 'selected' if channel.language_override == 'pt' }}>Portuguese</option>
+                                <option value="it" {{ 'selected' if channel.language_override == 'it' }}>Italian</option>
+                                <option value="ja" {{ 'selected' if channel.language_override == 'ja' }}>Japanese</option>
+                                <option value="ko" {{ 'selected' if channel.language_override == 'ko' }}>Korean</option>
+                            </select>
+                            <small class="form-text text-muted">Force bot to respond in a specific language</small>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-save me-2"></i>Save Settings
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Feed -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-history me-2"></i>Recent Activity
+                    </h5>
+                    <button class="btn btn-sm btn-outline-primary" onclick="refreshActivity()">
+                        <i class="fas fa-sync-alt me-1"></i>Refresh
+                    </button>
+                </div>
+                <div class="card-body p-0">
+                    <div id="activityFeed" class="list-group list-group-flush">
+                        {% if recent_activity %}
+                            {% for activity in recent_activity %}
+                            <div class="list-group-item activity-item">
+                                <div class="d-flex w-100 justify-content-between align-items-start">
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex align-items-center mb-1">
+                                            {% if activity.activity_type == 'prompt_sent' %}
+                                                <i class="fas fa-comment text-success me-2"></i>
+                                                <strong>Prompt Sent</strong>
+                                            {% elif activity.activity_type == 'stream_start' %}
+                                                <i class="fas fa-play text-primary me-2"></i>
+                                                <strong>Stream Started</strong>
+                                            {% elif activity.activity_type == 'stream_end' %}
+                                                <i class="fas fa-stop text-danger me-2"></i>
+                                                <strong>Stream Ended</strong>
+                                            {% else %}
+                                                <i class="fas fa-info text-info me-2"></i>
+                                                <strong>{{ activity.activity_type|title }}</strong>
+                                            {% endif %}
+                                            {% if activity.language_detected %}
+                                                <span class="badge bg-secondary ms-2">{{ activity.language_detected }}</span>
+                                            {% endif %}
+                                        </div>
+                                        {% if activity.message %}
+                                            <p class="mb-1 text-dark">{{ activity.message }}</p>
+                                        {% endif %}
+                                        {% if activity.transcript_snippet %}
+                                            <small class="text-muted">
+                                                <i class="fas fa-microphone me-1"></i>
+                                                "{{ activity.transcript_snippet[:100] }}{% if activity.transcript_snippet|length > 100 %}...{% endif %}"
+                                            </small>
+                                        {% endif %}
+                                    </div>
+                                    <small class="text-muted ms-3">
+                                        {{ moment(activity.timestamp).fromNow() }}
+                                    </small>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="list-group-item text-center py-5">
+                                <i class="fas fa-robot fa-3x text-muted mb-3"></i>
+                                <h5 class="text-muted">No activity yet</h5>
+                                <p class="text-muted mb-0">Start your bot to see activity here!</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center py-4">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mb-0" id="loadingText">Processing...</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script>
+// Bot toggle functionality
+document.getElementById('toggleBot').addEventListener('click', async function() {
+    const button = this;
+    const originalText = button.innerHTML;
+    const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+    
+    // Show loading
+    document.getElementById('loadingText').textContent = 
+        button.textContent.includes('Start') ? 'Starting ClipGremlin...' : 'Stopping ClipGremlin...';
+    loadingModal.show();
+    
+    try {
+        const response = await fetch('/api/bot/toggle', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            // Update UI based on new status
+            const isActive = data.status === 'started';
+            
+            // Update button
+            button.className = `btn btn-${isActive ? 'danger' : 'success'} btn-lg`;
+            button.innerHTML = `<i class="fas fa-${isActive ? 'stop' : 'play'} me-2"></i>${isActive ? 'Stop Bot' : 'Start Bot'}`;
+            
+            // Update status indicator
+            const statusIndicator = document.querySelector('.status-indicator');
+            statusIndicator.className = `status-indicator status-${isActive ? 'active' : 'inactive'}`;
+            statusIndicator.nextElementSibling.textContent = isActive ? 'Active' : 'Inactive';
+            
+            // Show success message
+            showAlert('success', data.message);
+            
+            // Refresh activity
+            setTimeout(refreshActivity, 1000);
+        } else {
+            showAlert('danger', data.error || 'An error occurred');
+        }
+    } catch (error) {
+        console.error('Error toggling bot:', error);
+        showAlert('danger', 'Network error occurred');
+    } finally {
+        loadingModal.hide();
+    }
+});
+
+// Settings form functionality
+const settingsForm = document.getElementById('settingsForm');
+const silenceDurationSlider = document.getElementById('silenceDuration');
+const messageRateSlider = document.getElementById('messageRate');
+
+// Update slider values in real-time
+silenceDurationSlider.addEventListener('input', function() {
+    document.getElementById('silenceDurationValue').textContent = this.value + 's';
+});
+
+messageRateSlider.addEventListener('input', function() {
+    document.getElementById('messageRateValue').textContent = this.value + '/30s';
+});
+
+// Settings form submission
+settingsForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        silence_duration: parseInt(silenceDurationSlider.value),
+        max_message_rate: parseInt(messageRateSlider.value),
+        language_override: document.getElementById('languageOverride').value || null
+    };
+    
+    try {
+        const response = await fetch('/api/settings', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            showAlert('success', 'Settings updated successfully!');
+        } else {
+            showAlert('danger', data.error || 'Failed to update settings');
+        }
+    } catch (error) {
+        console.error('Error updating settings:', error);
+        showAlert('danger', 'Network error occurred');
+    }
+});
+
+// Activity refresh
+async function refreshActivity() {
+    try {
+        const response = await fetch('/api/activity');
+        const data = await response.json();
+        
+        if (response.ok) {
+            updateActivityFeed(data.activities);
+        }
+    } catch (error) {
+        console.error('Error refreshing activity:', error);
+    }
+}
+
+function updateActivityFeed(activities) {
+    const feed = document.getElementById('activityFeed');
+    
+    if (activities.length === 0) {
+        feed.innerHTML = `
+            <div class="list-group-item text-center py-5">
+                <i class="fas fa-robot fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">No activity yet</h5>
+                <p class="text-muted mb-0">Start your bot to see activity here!</p>
+            </div>
+        `;
+        return;
+    }
+    
+    feed.innerHTML = activities.map(activity => {
+        const iconMap = {
+            'prompt_sent': 'fas fa-comment text-success',
+            'stream_start': 'fas fa-play text-primary',
+            'stream_end': 'fas fa-stop text-danger'
+        };
+        
+        const icon = iconMap[activity.type] || 'fas fa-info text-info';
+        
+        return `
+            <div class="list-group-item activity-item">
+                <div class="d-flex w-100 justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                        <div class="d-flex align-items-center mb-1">
+                            <i class="${icon} me-2"></i>
+                            <strong>${activity.type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}</strong>
+                            ${activity.language ? `<span class="badge bg-secondary ms-2">${activity.language}</span>` : ''}
+                        </div>
+                        ${activity.message ? `<p class="mb-1 text-dark">${activity.message}</p>` : ''}
+                    </div>
+                    <small class="text-muted ms-3">
+                        ${moment(activity.timestamp).fromNow()}
+                    </small>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Utility function to show alerts
+function showAlert(type, message) {
+    const alertHtml = `
+        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    `;
+    
+    // Insert alert at the top of the container
+    const container = document.querySelector('.container');
+    container.insertAdjacentHTML('afterbegin', alertHtml);
+    
+    // Auto-dismiss after 5 seconds
+    setTimeout(() => {
+        const alert = container.querySelector('.alert');
+        if (alert) {
+            const bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        }
+    }, 5000);
+}
+
+// Auto-refresh activity every 30 seconds
+setInterval(refreshActivity, 30000);
+</script>
+{% endblock %}

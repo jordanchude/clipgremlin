@@ -1,0 +1,389 @@
+{% extends "base.html" %}
+
+{% block title %}Pricing - ClipGremlin{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="py-5 bg-gradient-primary text-white">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-8 mx-auto">
+                <h1 class="display-4 fw-bold mb-4">
+                    Simple, Transparent Pricing
+                </h1>
+                <p class="lead">
+                    Pay only for what you use. No hidden fees, no long-term contracts.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Cards -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center g-4">
+            <!-- Free Tier -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-lg">
+                    <div class="card-body p-5 text-center">
+                        <div class="pricing-badge bg-secondary text-white small px-3 py-1 rounded-pill mb-3">
+                            BETA
+                        </div>
+                        <h3 class="fw-bold">Free Beta</h3>
+                        <div class="pricing-amount mb-4">
+                            <span class="display-4 fw-bold">$0</span>
+                            <span class="text-muted">/month</span>
+                        </div>
+                        <p class="text-muted mb-4">
+                            Perfect for trying ClipGremlin and small streams
+                        </p>
+                        
+                        <ul class="list-unstyled text-start mb-4">
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Up to 10 hours/month streaming
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                All core features included
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Multi-language support
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Basic dashboard
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Community support
+                            </li>
+                        </ul>
+                        
+                        <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-lg w-100">
+                            <i class="fab fa-twitch me-2"></i>Start Free Beta
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pro Tier -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-lg position-relative">
+                    <div class="pricing-badge bg-primary text-white small px-3 py-1 rounded-pill position-absolute" style="top: -10px; left: 50%; transform: translateX(-50%);">
+                        MOST POPULAR
+                    </div>
+                    <div class="card-body p-5 text-center">
+                        <h3 class="fw-bold text-primary">Pro</h3>
+                        <div class="pricing-amount mb-4">
+                            <span class="display-4 fw-bold">$9</span>
+                            <span class="text-muted">/month</span>
+                        </div>
+                        <p class="text-muted mb-4">
+                            Ideal for regular streamers and growing communities
+                        </p>
+                        
+                        <ul class="list-unstyled text-start mb-4">
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Unlimited streaming hours
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Priority AI processing
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Advanced analytics dashboard
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Custom prompt styling
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Email support
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Early access to new features
+                            </li>
+                        </ul>
+                        
+                        <button class="btn btn-primary btn-lg w-100" disabled>
+                            <i class="fas fa-clock me-2"></i>Coming Soon
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enterprise Tier -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-lg">
+                    <div class="card-body p-5 text-center">
+                        <div class="pricing-badge bg-warning text-dark small px-3 py-1 rounded-pill mb-3">
+                            ENTERPRISE
+                        </div>
+                        <h3 class="fw-bold">Custom</h3>
+                        <div class="pricing-amount mb-4">
+                            <span class="display-4 fw-bold">$$$</span>
+                            <span class="text-muted">/month</span>
+                        </div>
+                        <p class="text-muted mb-4">
+                            For large streamers, organizations, and custom needs
+                        </p>
+                        
+                        <ul class="list-unstyled text-start mb-4">
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Everything in Pro
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Custom AI model training
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                White-label branding
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Dedicated infrastructure
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                24/7 phone support
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                SLA guarantees
+                            </li>
+                        </ul>
+                        
+                        <a href="mailto:enterprise@clipgremlin.com" class="btn btn-outline-warning btn-lg w-100">
+                            <i class="fas fa-envelope me-2"></i>Contact Sales
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Usage-Based Pricing Info -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold">How Usage-Based Pricing Works</h2>
+                <p class="lead text-muted">You only pay when you're actively streaming</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="text-center">
+                    <div class="usage-icon bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-play fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold">Stream Goes Live</h5>
+                    <p class="text-muted">ClipGremlin automatically starts when your stream begins</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="text-center">
+                    <div class="usage-icon bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-robot fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold">Bot Actively Monitoring</h5>
+                    <p class="text-muted">Processing audio and generating prompts as needed</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="text-center">
+                    <div class="usage-icon bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-stop fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold">Stream Ends</h5>
+                    <p class="text-muted">Bot automatically shuts down, usage tracking stops</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="text-center">
+                    <div class="usage-icon bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-dollar-sign fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold">$0 When Offline</h5>
+                    <p class="text-muted">No charges when you're not streaming</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold">Frequently Asked Questions</h2>
+                <p class="lead text-muted">Everything you need to know about ClipGremlin pricing</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion" id="pricingFAQ">
+                    <div class="accordion-item">
+                        <h3 class="accordion-header" id="faq1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1">
+                                How is usage calculated?
+                            </button>
+                        </h3>
+                        <div id="faqCollapse1" class="accordion-collapse collapse show" data-bs-parent="#pricingFAQ">
+                            <div class="accordion-body">
+                                Usage is calculated based on active streaming time when ClipGremlin is monitoring your channel. 
+                                The bot automatically starts when you go live and stops when you end your stream. 
+                                You're only charged for the time the bot is actively processing your stream.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h3 class="accordion-header" id="faq2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2">
+                                What happens if I go over my free tier limit?
+                            </button>
+                        </h3>
+                        <div id="faqCollapse2" class="accordion-collapse collapse" data-bs-parent="#pricingFAQ">
+                            <div class="accordion-body">
+                                During the beta period, we'll send you a notification when you approach your 10-hour limit. 
+                                The bot will continue working but you'll be prompted to upgrade to a paid plan. 
+                                We'll never cut you off mid-stream!
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h3 class="accordion-header" id="faq3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3">
+                                Can I cancel anytime?
+                            </button>
+                        </h3>
+                        <div id="faqCollapse3" class="accordion-collapse collapse" data-bs-parent="#pricingFAQ">
+                            <div class="accordion-body">
+                                Absolutely! There are no long-term contracts or cancellation fees. 
+                                You can upgrade, downgrade, or cancel your subscription at any time from your dashboard. 
+                                Changes take effect at the start of your next billing cycle.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h3 class="accordion-header" id="faq4">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse4">
+                                Are there any setup fees?
+                            </button>
+                        </h3>
+                        <div id="faqCollapse4" class="accordion-collapse collapse" data-bs-parent="#pricingFAQ">
+                            <div class="accordion-body">
+                                No setup fees, activation fees, or hidden charges. The price you see is exactly what you pay. 
+                                During the beta period, everything is completely free to help us test and improve the service.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h3 class="accordion-header" id="faq5">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse5">
+                                Do you offer refunds?
+                            </button>
+                        </h3>
+                        <div id="faqCollapse5" class="accordion-collapse collapse" data-bs-parent="#pricingFAQ">
+                            <div class="accordion-body">
+                                We offer a 30-day money-back guarantee for all paid plans. If you're not satisfied with ClipGremlin 
+                                for any reason, contact our support team within 30 days of your first payment for a full refund.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h3 class="accordion-header" id="faq6">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse6">
+                                What payment methods do you accept?
+                            </button>
+                        </h3>
+                        <div id="faqCollapse6" class="accordion-collapse collapse" data-bs-parent="#pricingFAQ">
+                            <div class="accordion-body">
+                                We accept all major credit cards (Visa, MasterCard, American Express, Discover) and PayPal. 
+                                All payments are processed securely through Stripe with industry-standard encryption.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Beta Notice -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-8 mx-auto">
+                <div class="d-inline-flex align-items-center bg-white bg-opacity-25 rounded-pill px-4 py-2 mb-4">
+                    <i class="fas fa-rocket text-warning me-2"></i>
+                    <span class="fw-semibold">BETA PERIOD</span>
+                </div>
+                <h2 class="display-5 fw-bold mb-4">Join the Beta for Free! 🎉</h2>
+                <p class="lead mb-4">
+                    We're currently in beta and looking for streamers to help us test and improve ClipGremlin. 
+                    Get full access to all features completely free during the beta period.
+                </p>
+                <a href="{{ url_for('login') }}" class="btn btn-warning btn-lg">
+                    <i class="fab fa-twitch me-2"></i>Join Beta Now
+                </a>
+                <p class="mt-3 text-light opacity-75">
+                    <small>Beta users get grandfathered pricing when we launch paid tiers</small>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Add smooth animations to pricing cards
+document.addEventListener('DOMContentLoaded', function() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }, index * 100);
+            }
+        });
+    }, observerOptions);
+    
+    // Animate pricing cards
+    document.querySelectorAll('.card, .usage-icon').forEach((element, index) => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(30px)';
+        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(element);
+    });
+});
+</script>
+{% endblock %}

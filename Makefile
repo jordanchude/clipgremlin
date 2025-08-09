@@ -20,15 +20,25 @@ build:
 	@echo "🐳 Building ClipGremlin Docker image..."
 	docker build -t clipgremlin:latest .
 
-# Run with docker-compose
+# Run web application
 run:
-	@echo "🚀 Starting ClipGremlin with docker-compose..."
-	docker-compose up --build
+	@echo "🌐 Starting ClipGremlin web application..."
+	docker-compose up --build web db
+
+# Run single bot instance
+run-bot:
+	@echo "🤖 Starting single ClipGremlin bot..."
+	docker-compose --profile single-bot up --build bot
+
+# Run everything (web + bot)
+run-all:
+	@echo "🚀 Starting full ClipGremlin stack..."
+	docker-compose --profile single-bot up --build
 
 # Run in background
 run-bg:
-	@echo "🚀 Starting ClipGremlin in background..."
-	docker-compose up --build -d
+	@echo "🚀 Starting ClipGremlin web in background..."
+	docker-compose up --build -d web db
 
 # Stop background services
 stop:

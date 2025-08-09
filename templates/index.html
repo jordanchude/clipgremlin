@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="display-4 fw-bold mb-4">
+                        Meet ClipGremlin <span class="text-warning">😈</span>
+                    </h1>
+                    <p class="lead mb-4">
+                        A mischievous but friendly Twitch bot that keeps your chat engaged during those quiet moments. 
+                        Using AI-powered audio transcription and smart prompt generation, ClipGremlin adds personality 
+                        to your stream when chat goes silent.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="{{ url_for('login') }}" class="btn btn-warning btn-lg me-3">
+                            <i class="fab fa-twitch me-2"></i>Add to Your Channel
+                        </a>
+                        <a href="{{ url_for('features') }}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-info-circle me-2"></i>Learn More
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-image text-center">
+                    <div class="bot-preview bg-white rounded-3 shadow-lg p-4 mx-auto" style="max-width: 400px;">
+                        <div class="chat-simulation">
+                            <div class="chat-header bg-purple text-white p-2 rounded-top">
+                                <i class="fas fa-comments me-2"></i>Live Chat
+                            </div>
+                            <div class="chat-messages p-3" style="height: 200px; overflow-y: auto;">
+                                <div class="chat-message mb-2">
+                                    <strong class="text-primary">Viewer1:</strong> Great stream!
+                                </div>
+                                <div class="chat-message mb-2">
+                                    <strong class="text-success">Viewer2:</strong> Love this game
+                                </div>
+                                <div class="text-muted small mb-3">
+                                    <em>...60 seconds of silence...</em>
+                                </div>
+                                <div class="chat-message bot-message bg-warning bg-opacity-25 p-2 rounded">
+                                    <strong class="text-dark">
+                                        <i class="fas fa-robot me-1"></i>ClipGremlin:
+                                    </strong>
+                                    <span class="text-dark">So... anyone else hear that mysterious sound? 🤔</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Preview -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold">Why Streamers Love ClipGremlin</h2>
+                <p class="lead text-muted">Intelligent, engaging, and completely automated</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card text-center h-100 p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-microphone-alt fa-3x text-primary"></i>
+                    </div>
+                    <h4>Real-time Audio Analysis</h4>
+                    <p class="text-muted">
+                        Transcribes your stream audio in real-time using OpenAI Whisper-Turbo 
+                        with ~300ms latency and automatic language detection.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="feature-card text-center h-100 p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-brain fa-3x text-success"></i>
+                    </div>
+                    <h4>AI-Powered Prompts</h4>
+                    <p class="text-muted">
+                        Generates contextual, mischievous but friendly prompts based on your recent 
+                        stream content to spark chat engagement.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="feature-card text-center h-100 p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-shield-alt fa-3x text-warning"></i>
+                    </div>
+                    <h4>Twitch ToS Safe</h4>
+                    <p class="text-muted">
+                        All prompts are PG-13 and checked against Twitch's AutoMod before posting. 
+                        Moderators can pause/resume anytime.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold">How It Works</h2>
+                <p class="lead text-muted">Set up in minutes, engage viewers for hours</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-3 text-center">
+                <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                    <span class="fw-bold">1</span>
+                </div>
+                <h5>Connect Your Channel</h5>
+                <p class="text-muted">Authorize ClipGremlin with your Twitch account using secure OAuth.</p>
+            </div>
+            
+            <div class="col-lg-3 text-center">
+                <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                    <span class="fw-bold">2</span>
+                </div>
+                <h5>Start Streaming</h5>
+                <p class="text-muted">ClipGremlin automatically joins when you go live and leaves when you end.</p>
+            </div>
+            
+            <div class="col-lg-3 text-center">
+                <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                    <span class="fw-bold">3</span>
+                </div>
+                <h5>Chat Goes Quiet</h5>
+                <p class="text-muted">After 60 seconds of silence, ClipGremlin analyzes your recent audio.</p>
+            </div>
+            
+            <div class="col-lg-3 text-center">
+                <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                    <span class="fw-bold">4</span>
+                </div>
+                <h5>Engage Your Audience</h5>
+                <p class="text-muted">A perfectly timed, contextual prompt appears to re-energize your chat!</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item">
+                    <h3 class="display-4 fw-bold text-primary">~300ms</h3>
+                    <p class="text-muted">Audio Processing Latency</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item">
+                    <h3 class="display-4 fw-bold text-success">25+</h3>
+                    <p class="text-muted">Languages Supported</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item">
+                    <h3 class="display-4 fw-bold text-warning">100%</h3>
+                    <p class="text-muted">Twitch ToS Compliant</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item">
+                    <h3 class="display-4 fw-bold text-info">$0</h3>
+                    <p class="text-muted">Cost When Offline</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold mb-4">Ready to Add Some Mischief? 😈</h2>
+                <p class="lead mb-4">
+                    Join streamers who are already using ClipGremlin to keep their communities engaged. 
+                    Setup takes less than 2 minutes!
+                </p>
+                <a href="{{ url_for('login') }}" class="btn btn-warning btn-lg">
+                    <i class="fab fa-twitch me-2"></i>Connect Your Channel Now
+                </a>
+                <p class="mt-3 text-light opacity-75">
+                    <small>Free to try • No credit card required • Cancel anytime</small>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Add some interactive animations
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate feature cards on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    document.querySelectorAll('.feature-card').forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+    });
+});
+</script>
+{% endblock %}

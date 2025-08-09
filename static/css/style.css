@@ -1,0 +1,336 @@
+/* ClipGremlin Custom Styles */
+
+:root {
+    --primary-color: #6f42c1;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --info-color: #0dcaf0;
+    --dark-color: #212529;
+    --light-color: #f8f9fa;
+}
+
+/* Global Styles */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #8b5cf6 100%);
+}
+
+.bg-purple {
+    background-color: #6f42c1;
+}
+
+/* Hero Section */
+.hero-section {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+}
+
+.min-vh-75 {
+    min-height: 75vh;
+}
+
+.hero-buttons .btn {
+    margin-bottom: 1rem;
+}
+
+/* Bot Preview */
+.bot-preview {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.chat-simulation {
+    font-size: 0.9rem;
+}
+
+.chat-messages {
+    background-color: #f8f9fa;
+    font-family: 'Courier New', monospace;
+}
+
+.bot-message {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Feature Cards */
+.feature-card {
+    background: white;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-color);
+}
+
+.feature-icon {
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.1);
+}
+
+/* Step Numbers */
+.step-number {
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.step-number:hover {
+    transform: scale(1.1);
+}
+
+/* Dashboard Styles */
+.status-indicator {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+.activity-item {
+    transition: all 0.2s ease;
+}
+
+.activity-item:hover {
+    background-color: #f8f9fa !important;
+    padding-left: 1.25rem;
+}
+
+/* Settings Cards */
+.settings-card {
+    border: 1px solid #dee2e6;
+}
+
+.settings-card:hover {
+    border-color: var(--primary-color);
+}
+
+/* Form Controls */
+.form-range::-webkit-slider-thumb {
+    background: var(--primary-color);
+}
+
+.form-range::-moz-range-thumb {
+    background: var(--primary-color);
+    border: none;
+}
+
+/* Pricing Cards */
+.pricing-badge {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.pricing-amount {
+    color: var(--primary-color);
+}
+
+/* Language Items */
+.language-item {
+    transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
+.language-item:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+}
+
+/* Command Items */
+.command-item {
+    transition: all 0.3s ease;
+}
+
+.command-example {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+/* Usage Icons */
+.usage-icon {
+    transition: all 0.3s ease;
+}
+
+.usage-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Buttons */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-warning {
+    color: var(--dark-color);
+}
+
+.btn-warning:hover {
+    color: var(--dark-color);
+}
+
+/* Cards */
+.card {
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    border-color: var(--primary-color);
+}
+
+/* Navbar */
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+/* Footer */
+footer a {
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: var(--warning-color) !important;
+}
+
+/* Alerts */
+.alert {
+    border-radius: 8px;
+    border: none;
+}
+
+/* Accordion */
+.accordion-button {
+    font-weight: 500;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: 70vh;
+        text-align: center;
+    }
+    
+    .display-4 {
+        font-size: 2.5rem;
+    }
+    
+    .hero-buttons {
+        margin-top: 2rem;
+    }
+    
+    .hero-buttons .btn {
+        display: block;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    
+    .bot-preview {
+        margin-top: 3rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .display-5 {
+        font-size: 1.75rem;
+    }
+    
+    .lead {
+        font-size: 1.1rem;
+    }
+}
+
+/* Loading Animations */
+.fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.slide-up {
+    animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Utility Classes */
+.text-gradient {
+    background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.shadow-custom {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.border-gradient {
+    border: 2px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(135deg, var(--primary-color), #8b5cf6) border-box;
+}
+
+/* Dark Mode Support (Future) */
+@media (prefers-color-scheme: dark) {
+    /* Dark mode styles would go here */
+}
